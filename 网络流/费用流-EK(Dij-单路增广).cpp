@@ -5,8 +5,8 @@ using namespace std;
 typedef long long ll;
 
 const int maxn = 50010;
-const int inf = 0x7fffffff;
-//const ll inf = 0x7fffffffffffffffLL;
+const int inf = ~0u >> 1u;
+//const ll inf = ~0llu >> 1u;
 
 template <class T>
 struct gra{
@@ -27,37 +27,46 @@ struct gra{
 };
 
 template <class T>
+struct node{
+    T v;
+    int x;
+    node(T v=0, int x=0) : v(v), x(x) {}
+    bool operator < (const node &t) const {return v > t.v;}
+};
+
+template <class T>
 struct cost_flow{
     gra <T> e;
-    int pr[maxn], q[maxn], s, t, mx;
+    int pr[maxn], s, t, mx;
     bool vis[maxn];
-    T dis[maxn], mnf[maxn];
+    T dis[maxn], mnf[maxn], h[maxn];
+    priority_queue <node <T> > q;
     void init(int ss, int tt, int mxx){s = ss, t = tt, mx = mxx, e.clear(mx);}
-    bool spfa(){
-        for(int i = 0; i <= mx; i ++) dis[i] = inf, vis[i] = 0;
-        int l = 1, r = 0;
-        mnf[s] = inf, vis[s] = 1, dis[s] = 0, q[++ r] = s;
-        while(l <= r){
-            int x = q[l ++];
+    bool dij(){
+        for(int i = 0; i <= mx; i ++) dis[i] = inf, vis[i] = false;
+        mnf[s] = inf, dis[s] = 0, q.push(node<T>(0, s));
+        while(!q.empty()){
+            int x = q.top().x; q.pop();
+            if(vis[x]) continue; vis[x] = 1;
             for(int i = e.head[x]; i; i = e.nxt[i]){
-                int u = e.to[i];
-                if(e.f[i] > 0 && dis[u] > dis[x] + e.v[i]){
-                    dis[u] = dis[x] + e.v[i];
-                    pr[u] = i, mnf[u] = min(mnf[x], e.f[i]);
-                    if(vis[u] == 0) vis[u] = 1, q[++ r] = u;
+                int u = e.to[i]; if(e.f[i] == 0) continue;
+                T v = e.v[i] + h[x] - h[u];
+                if(!vis[u] && dis[u] > dis[x] + v){
+                    dis[u] = dis[x] + v, pr[u] = i;
+                    mnf[u] = min(mnf[x], e.f[i]);
+                    q.push(node<T>(dis[u], u));
                 }
             }
-            vis[x] = 0;
         }
-        return dis[t] != inf;
+        return vis[t];
     }
     pair<T, T> ek(){
         T flow = 0, cost = 0;
-        while(spfa()){
-            cost += mnf[t]*dis[t], flow += mnf[t];
-            for(int x = t; x != s; x = e.to[pr[x] ^ 1]){
-                e.f[pr[x]] -= mnf[t], e.f[pr[x]^1] += mnf[t];
-            }
+        while(dij()){
+            for(int i = 0; i <= mx; i ++) if(dis[i] < inf) h[i] += dis[i];
+            cost += mnf[t] * h[t], flow += mnf[t];
+            for(int x = t; x != s; x = e.to[pr[x] ^ 1])
+                e.f[pr[x]] -= mnf[t], e.f[pr[x] ^ 1] += mnf[t];
         }
         return make_pair(flow, cost);
     }
