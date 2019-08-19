@@ -10,16 +10,9 @@ const ll inf = 0x7fffffffffffffffLL;
 
 template <class T>
 struct gra{
-    int mxn;
     int head[maxn], to[maxn<<1], nxt[maxn<<1], cnt;
     T f[maxn<<1];
-    void clear(int n=0){
-        if(n) mxn = n;
-        if(cnt != 1){
-            for(int i = 0; i <= mxn; i ++) head[i] = 0;
-            cnt = 1;
-        }
-    }
+    void clear(int n) {fill(head, head+1+n, 0), cnt = 1;}
     void add(int a, int b, T c){
         nxt[++ cnt] = head[a], head[a] = cnt, to[cnt] = b, f[cnt] = c;
         nxt[++ cnt] = head[b], head[b] = cnt, to[cnt] = a, f[cnt] = 0;
