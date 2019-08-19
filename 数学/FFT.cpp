@@ -40,7 +40,7 @@ com a[maxn], b[maxn], Z;
 
 int main(){
 
-    for(mx = 1; mx < 2*n-1/*新多项式的长度*/; mx <<= 1, B ++);
+    for(B = 0, mx = 1; mx < 2*n-1/*新多项式的长度*/; mx <<= 1, B ++);
     for(int j = 0; j < mx; j ++) a[j] = b[j] = Z;
 
     fft(a, mx, 1), fft(b, mx, 1);

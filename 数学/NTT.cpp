@@ -15,10 +15,10 @@ ll pow(ll x, int y){
 }
 ll ni(ll x, int inv){return inv == 1 ? x : pow(x, p-2);}
 
-int R[maxn], B, las, mx;
+int R[maxn], B, lsn, mx;
 
 void ntt(ll *a, int n, int inv){
-    if(las != n && (las = n)) 
+    if(lsn != n && (lsn = n)) 
         for(int i = 0; i < n; i ++) R[i] = (R[i>>1]>>1) | ((i&1)<<(B-1));
     for(int i = 0; i < n; i ++) if(i < R[i]) swap(a[i], a[R[i]]);
     for(int i = 1; i < n; i <<= 1){
@@ -40,7 +40,7 @@ ll a[maxn], b[maxn];
 
 int main(){
 
-    for(mx = 1; mx < /*新多项式的长度*/; mx <<= 1, B ++);
+    for(B = 0, mx = 1; mx < /*新多项式的长度*/; mx <<= 1, B ++);
     for(int i = 0; i < mx; i ++) a[i] = b[i] = 0;
 
     ntt(a, mx, 1), ntt(b, mx, 1);
