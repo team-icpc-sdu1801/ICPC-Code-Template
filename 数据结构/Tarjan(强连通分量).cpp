@@ -3,14 +3,14 @@ struct Tarjan : public gra{
     int dfn[maxn], low[maxn], st[maxn], scc[maxn], sz[maxn];
     int tp, tim, num, n;
     gra e;
-    void init(int N){clear(n = N), tim = 0, num = 0, tp = 0, mem(dfn, 0);}
+    void init(int N){clear(n = N), tim = 0, num = 0, tp = 0, mem(dfn, 0), mem(scc, 0);}
     int dfs(int x){
         dfn[x] = low[x] = ++ tim, st[++tp] = x;
         int stx = tp;
         for(int i = head[x]; i; i = nxt[i]){
             int u = to[i];
             if(!dfn[u]) dfs(u), low[x] = min(low[x], low[u]);
-            else low[x] = min(low[x], dfn[u]);
+            else if(!scc[u]) low[x] = min(low[x], dfn[u]);
         }
         if(dfn[x] == low[x]){
             sz[++ num] = tp - stx + 1;
