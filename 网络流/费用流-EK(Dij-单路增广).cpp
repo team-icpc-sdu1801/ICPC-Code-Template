@@ -34,7 +34,7 @@ struct cost_flow{
     bool vis[maxn];
     T dis[maxn], mnf[maxn], h[maxn];
     priority_queue <node <T> > q;
-    void init(int ss, int tt, int mxx){s = ss, t = tt, mx = mxx, e.clear(mx);}
+    void init(int ss, int tt, int mxx){s = ss, t = tt, mx = mxx, e.clear(mx), fill(h, h+1+mx, 0);}
     bool dij(){
         for(int i = 0; i <= mx; i ++) dis[i] = inf, vis[i] = false;
         mnf[s] = inf, dis[s] = 0, q.push(node<T>(0, s));
