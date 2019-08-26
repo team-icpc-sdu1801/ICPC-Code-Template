@@ -92,3 +92,4 @@ bool SegInter(point a1, point a2, point b1, point b2){
     return (dcmp(c1) * dcmp(c2) < 0 && dcmp(c3) * dcmp(c4) < 0);
 }
 
+// pick定理 2S = 2A + B - 2， A为多边形内部的格点数， B为边上的格点数， 边上的格点数 ： GCD(X, Y).
