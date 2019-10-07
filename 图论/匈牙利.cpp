@@ -1,4 +1,5 @@
-//匈牙利求最小点覆盖（点数 － 最大匹配）
+//匈牙利求最小边覆盖（点数 － 最大匹配）
+//最小点覆盖 ＝ 最大匹配
 #include<iostream>
 #include<cstdio>
 #include<cstring>
