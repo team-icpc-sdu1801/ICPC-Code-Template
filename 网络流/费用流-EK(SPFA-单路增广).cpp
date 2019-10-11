@@ -1,14 +1,5 @@
-#include <bits/stdc++.h>
+typedef int T;
 
-using namespace std;
-
-typedef long long ll;
-
-const int maxn = 50010;
-const int inf = 0x7fffffff;
-//const ll inf = 0x7fffffffffffffffLL;
-
-template <class T>
 struct gra{
     int head[maxn], to[maxn<<1], nxt[maxn<<1], cnt;
     T f[maxn<<1], v[maxn << 1];
@@ -19,24 +10,22 @@ struct gra{
     }
 };
 
-template <class T>
-struct cost_flow{
-    gra <T> e;
+struct cost_flow : public gra{
     int pr[maxn], q[maxn], s, t, mx;
     bool vis[maxn];
     T dis[maxn], mnf[maxn];
-    void init(int ss, int tt, int mxx){s = ss, t = tt, mx = mxx, e.clear(mx);}
+    void init(int ss, int tt, int mxx){s = ss, t = tt, mx = mxx, clear(mx);}
     bool spfa(){
         for(int i = 0; i <= mx; i ++) dis[i] = inf, vis[i] = 0;
         int l = 1, r = 0;
         mnf[s] = inf, vis[s] = 1, dis[s] = 0, q[++ r] = s;
         while(l <= r){
             int x = q[l ++];
-            for(int i = e.head[x]; i; i = e.nxt[i]){
-                int u = e.to[i];
-                if(e.f[i] > 0 && dis[u] > dis[x] + e.v[i]){
-                    dis[u] = dis[x] + e.v[i];
-                    pr[u] = i, mnf[u] = min(mnf[x], e.f[i]);
+            for(int i = head[x]; i; i = nxt[i]){
+                int u = to[i];
+                if(f[i] > 0 && dis[u] > dis[x] + v[i]){
+                    dis[u] = dis[x] + v[i];
+                    pr[u] = i, mnf[u] = min(mnf[x], f[i]);
                     if(vis[u] == 0) vis[u] = 1, q[++ r] = u;
                 }
             }
@@ -48,26 +37,10 @@ struct cost_flow{
         T flow = 0, cost = 0;
         while(spfa()){
             cost += mnf[t]*dis[t], flow += mnf[t];
-            for(int x = t; x != s; x = e.to[pr[x] ^ 1]){
-                e.f[pr[x]] -= mnf[t], e.f[pr[x]^1] += mnf[t];
+            for(int x = t; x != s; x = to[pr[x] ^ 1]){
+                f[pr[x]] -= mnf[t], f[pr[x]^1] += mnf[t];
             }
         }
         return make_pair(flow, cost);
     }
 };
-
-cost_flow <int> flw;
-int n, m, s, t;
-
-int main(){
-    scanf("%d%d%d%d", &n, &m, &s, &t);
-    flw.init(s, t, n);
-    for(int i = 1; i <= m; i ++){
-        int a, b, c, d;
-        scanf("%d%d%d%d", &a, &b, &c, &d);
-        flw.e.add(a, b, c, d);
-    }
-    auto res = flw.ek();
-    printf("%d %d\n", res.first, res.second);
-    return 0;
-}

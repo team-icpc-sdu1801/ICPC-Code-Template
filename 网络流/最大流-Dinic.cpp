@@ -1,14 +1,5 @@
-#include <bits/stdc++.h>
+typedef int T;
 
-using namespace std;
-
-typedef long long ll;
-
-const int maxn = 120010;
-//const int inf = 0x7fffffff;
-const ll inf = 0x7fffffffffffffffLL;
-
-template <class T>
 struct gra{
     int head[maxn], to[maxn<<1], nxt[maxn<<1], cnt;
     T f[maxn<<1];
@@ -19,33 +10,30 @@ struct gra{
     }
 };
 
-template <class T>
-struct flow{
-    gra <T> e;
+struct flow : public gra{
     int dep[maxn], q[maxn], cur[maxn], s, t, mx;
-    bool vis[maxn];
-    void init(int ss, int tt, int mxx){s = ss, t = tt, mx = mxx, e.clear(mx);}
+    void init(int ss, int tt, int mxx){s = ss, t = tt, mx = mxx, clear(mx);}
     bool bfs(){
-        for(int i = 0; i <= mx; i ++) vis[i] = false, dep[i] = 0;
+        for(int i = 0; i <= mx; i ++) dep[i] = -1;
         int l = 1, r = 0;
-        q[++ r] = s, vis[s] = true, dep[s] = 1;
+        q[++ r] = s, dep[s] = 1;
         while(l <= r){
             int x = q[l ++];
-            for(int i = e.head[x]; i; i = e.nxt[i]){
-                int u = e.to[i];
-                if(!vis[u] && e.f[i] > 0)
-                    q[++ r] = u, dep[u] = dep[x] + 1, vis[u] = true;
+            for(int i = head[x]; i; i = nxt[i]){
+                int u = to[i];
+                if(dep[u] == -1 && f[i] > 0)
+                    q[++ r] = u, dep[u] = dep[x] + 1;
             }
         }
-        return vis[t];
+        return dep[t] != -1;
     }
     T dfs(int x, T mr){
         if(x == t || mr == 0) return mr;
         T c = 0, res = 0;
-        for(int &i = cur[x]; i; i = e.nxt[i]){
-            int u = e.to[i];
-            if(dep[u] == dep[x] + 1 && (c = dfs(u, min(mr, e.f[i]))))
-                e.f[i] -= c, e.f[i^1] += c, mr -= c, res += c;
+        for(int &i = cur[x]; i; i = nxt[i]){
+            int u = to[i];
+            if(dep[u] == dep[x] + 1 && (c = dfs(u, min(mr, f[i]))))
+                f[i] -= c, f[i^1] += c, mr -= c, res += c;
             if(mr == 0) break;
         }
         return res;
@@ -53,24 +41,9 @@ struct flow{
     T dinic(){
         T res = 0;
         while(bfs()){
-            for(int i = 0; i <= mx; i ++) cur[i] = e.head[i];
+            for(int i = 0; i <= mx; i ++) cur[i] = head[i];
             res += dfs(s, inf);
         }
         return res;
     }
 };
-
-int n, m, s, t;
-flow<ll> flw;
-
-int main(){
-    scanf("%d%d%d%d", &n, &m, &s, &t);
-    flw.init(s, t, n);
-    for(int i = 1, a, b, c; i <= m; i ++){
-        scanf("%d%d%d", &a, &b, &c);
-        flw.e.add(a, b, c);
-    }
-    printf("%lld\n", flw.dinic());
-    return 0;
-}
-
