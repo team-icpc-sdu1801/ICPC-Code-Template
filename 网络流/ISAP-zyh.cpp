@@ -1,4 +1,4 @@
-//注意：te初值为0， mx为总点数， head记得清空
+//注意：te初值为1， mx为总点数， head记得清空
 #include<cstdio>
 #include<iostream>
 #include<cstring>
