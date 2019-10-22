@@ -11,6 +11,7 @@ inline int caliper(polygon P) {
         int m = P.size() - 1;
         int j = 2;
         for (int i = 0; i < m; ++i) {
+            //万分注意这里一定是小于不能是小于等于，否则有可能被卡
             while (abs((P[i] - P[i + 1]) ^ (P[j] - P[i + 1])) < abs((P[i] - P[i + 1]) ^ (P[j + 1] - P[i + 1])))
                 j = (j + 1) % m;
             res = max(res, (P[i] - P[j]).dis2());
