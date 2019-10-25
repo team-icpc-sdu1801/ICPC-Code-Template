@@ -1,4 +1,5 @@
 //AC自动机求最大出现次数
+//注意AC自动机上是可能出现自环的，所以在判环的时候要注意
 #include<cstdio>
 #include<iostream>
 #include<cstring>
