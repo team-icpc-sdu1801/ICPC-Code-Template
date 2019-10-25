@@ -25,7 +25,7 @@ namespace AC{
         int u = 0;
         for (int i = 1; s[i]; i++){
             if (!tr[u][s[i] - 'a']) tr[u][s[i] - 'a'] = ++tot;
-        u = tr[u][s[i] - 'a'];
+            u = tr[u][s[i] - 'a'];
         }
         idx[u] = id;
     }
