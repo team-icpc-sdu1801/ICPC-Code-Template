@@ -6,7 +6,7 @@ int prime[N+10], cnt;
 int miu[N+10];
 ll n, ans;
 void init(){
-    phi[1] = 1;
+    miu[1] = 1;
     is[1] = is[0] = 1;
     for(int i = 2; i <= N; i ++){
         if(!is[i]) prime[++cnt] = i, miu[i] = -1;
@@ -14,9 +14,9 @@ void init(){
             if(i*prime[j] >= N) break;
             is[i*prime[j]] = 1;
             if(i % prime[j] == 0){
-                mui[i*prime[j]] = 0;
+                miu[i*prime[j]] = 0;
                 break;
-            }else mui[i*prime[j]] = - mui[i];
+            }else miu[i*prime[j]] = - miu[i];
         }
     }
 }
@@ -53,7 +53,7 @@ int prime[N+10], cnt;
 int d[N+10], num[N+10];
 ll n, ans; 
 void init(){
-    phi[1] = 1;
+    d[1] = 1,num[1] = 0;
     is[1] = is[0] = 1;
     for(int i = 2; i <= N; i ++){
         if(!is[i]) prime[++cnt] = i, d[i] = 2, num[i] = 1;
@@ -78,7 +78,7 @@ int prime[N+10], cnt;
 int sd[N+10], sp[N+10];
 ll n, ans; 
 void init(){
-    phi[1] = 1;
+    sp[1] = 0, sd[1] = 1;
     is[1] = is[0] = 1;
     for(int i = 2; i <= N; i ++){
         if(!is[i]) prime[++cnt] = i, sd[i] = i + 1, sp[i] = i + 1;
