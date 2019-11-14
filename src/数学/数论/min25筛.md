@@ -1,15 +1,6 @@
-
-洛谷题库里面终于有我的题了（虽然是一道板子），必须发一份题解庆祝一下。
-
-题意
---
+## Min_25筛
 
 求 $\sum_{i=1}^nf(i)$ ，其中 $f(i)$ 是一个积性函数，且 $f(p^k)=p^k(p^k-1)$ 。
-
-Min_25筛
--------
-
-为什么这个筛法叫做Min25筛呢？因为这个算法是Min25发明的。
 
 假设我们要求一个 $\sum_{i=1}^nf(i)$ ，满足 $f(x)$ 是一个积性函数，且 $f(p^e)$ 是一个关于 $p$ 的低阶多项式。
 
@@ -25,7 +16,7 @@ $$\sum_{i=1}^nf(i)=\sum_{1\le p\le n}f(p)+\sum_{i=1\&\text{i is not a prime}}^nf
 
 然后，我们枚举后面合数的最小质因子以及最小质因子的次数。注意所有合数的最小质因子一定都小于等于 $\sqrt n$ ：
 
-$$\sum_{1\le p\le n}f(p)+\sum_{1\le p^e\le n,1\le p\le \sqrt n}f(p^e)\left(\sum_{1\le i\le n/p^e\&minp>p}f(i)\right)$$
+$$\sum_{1\le p\le n}f(p)+\sum_{1\le p^e\le n\,,1\le p\le \sqrt n}f(p^e)\left(\sum_{1\le i\le n\,,p^e\&minp>p}f(i)\right)$$
 
 其中 $minp$ 表示 $i$ 的最小质因子，因为公式中文太丑了所以就只好写英文了。
 
@@ -37,7 +28,7 @@ $$\sum_{1\le p\le n}f(p)+\sum_{1\le p^e\le n,1\le p\le \sqrt n}f(p^e)\left(\sum_
 
 我们考虑一个DP的思路（天哪这是怎么想到的）：我们不知道从哪里找来了一个DP数组 $g(n,i)$ ，满足
 
-$$g(n,j)=\sum_{i=1}^n\[\text{i is a prime or minp$ > p_j $}\]i^k$$
+$$g(n,j)=\sum_{i=1}^n[\text{i is a prime or minp$ > p_j $}]i^k$$
 
 这里的 $k$ 就是前面我们说的低阶多项式的一项。注意 $i^k$ 并不是我们要求的 $f$ ，只是一个和 $f$ 在质数处的取值一样的完全积性函数，这样后面计算起来比较方便。
 
@@ -91,9 +82,7 @@ $$S(n,x)=g(n)-sp_x+\sum_{p_k^e\le n\&k>x}f(p_k^e)\left(S\left(\dfrac{n}{p_k^e},k
 
 $1$ 既不是质数也不是合数，不含任何一个质因子，那么求解的过程中 $g$ 和 $S$ 到底是否包含 $1$ 呢？其实是否包含都可以，但是处理上略有差别。我的 $g$ 和 $S$ 都没有包含 $1$ ，只需要最后加一就行了。
 
-min25筛的时间复杂度据说是 $O\left(\dfrac{n^{3/4}}{\log n}\right)$ ，也有人说是 $O(n^{1-\epsilon})$ ，在这道题上大致是1e10跑1s左右的样子。但是这个算法常数很小，具体表现参加WC2019课件里面的一张图：
-
-![](https://cdn.luogu.com.cn/upload/pic/56355.png)
+min25筛的时间复杂度据说是 $O\left(\dfrac{n^{3/4}}{\log n}\right)$ ，也有人说是 $O(n^{1-\epsilon})$ ，在这道题上大致是1e10跑1s左右的样子。
 
 代码实现
 ----
