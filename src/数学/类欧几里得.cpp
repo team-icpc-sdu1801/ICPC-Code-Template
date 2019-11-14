@@ -1,23 +1,19 @@
 const LL p=998244353;
 LL i2=499122177,i6=166374059;//2^(-1),6^(-1)
-struct data
-{
+struct data{
 	data(){f=g=h=0;}
 	LL f,g,h;
 };
-data calc(LL n,LL a,LL b,LL c)
-{
+data calc(LL n,LL a,LL b,LL c){
 	LL ac=a/c,bc=b/c,m=(a*n+b)/c,n1=n+1,n21=n*2+1;
 	data d;
-	if(!a)
-	{
+	if(!a){
 		d.f=bc*n1%p;
 		d.g=bc*n%p*n1%p*i2%p;
 		d.h=bc*bc%p*n1%p;
 		return d;
 	}
-	if(a>=c||b>=c)
-	{
+	if(a>=c||b>=c){
 		d.f=n*n1%p*i2%p*ac%p+n1*bc%p;
 		d.g=ac*n%p*n1%p*n21%p*i6%p+bc*n%p*n1%p*i2%p;
 		d.h=ac*ac%p*n%p*n1%p*n21%p*i6%p+bc*bc%p*n1%p+ac*bc%p*n%p*n1%p;
